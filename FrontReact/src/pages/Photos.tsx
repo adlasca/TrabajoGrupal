@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+
 import {
   Typography,
   Button,
@@ -18,30 +19,33 @@ import {
   Grid,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { createPhoto, deletePhoto } from '../features/photos/photoSlice';
+import {createPhoto, deletePhoto, fetchPhotos, fetchPhotosByAlbumId} from '../features/photos/photoSlice';
 import type { Photo } from '../models/Photo';
 
 function Photos() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const { photos, loading, error } = useAppSelector((state) => state.photos);
-  
-  const [openDialog, setOpenDialog] = useState(false);
-  const [newPhoto, setNewPhoto] = useState<Omit<Photo, 'id'>>({
-    albumId: Number(id),
+
+  const [openDialog, setOpenDialog] = useState(false);const [newPhoto, setNewPhoto] = useState<Omit<Photo, 'id'>>({
+    albumId: id ? Number(id) : 0,
     title: '',
     url: '',
     thumbnailUrl: '',
   });
+
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
     severity: 'success',
   });
 
+
   useEffect(() => {
     if (id) {
-      //dispatch((Number(id)));
+      dispatch(fetchPhotosByAlbumId(Number(id)));
+    } else {
+      dispatch(fetchPhotos());
     }
   }, [dispatch, id]);
 
@@ -60,7 +64,10 @@ function Photos() {
       await dispatch(createPhoto(newPhoto)).unwrap();
       setSnackbar({ open: true, message: 'Foto creada exitosamente', severity: 'success' });
       setOpenDialog(false);
-      setNewPhoto({ albumId: Number(id), title: '', url: '', thumbnailUrl: '' });
+      setNewPhoto({
+        albumId: id ? Number(id) : 0,
+        title: '',
+        url: '', thumbnailUrl: '' });
     } catch (err) {
       setSnackbar({ open: true, message: 'Error al crear foto', severity: 'error' });
     }
@@ -87,15 +94,12 @@ function Photos() {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom sx={{ mt: 5, textAlign: "center" }}>
-        Fotos del Álbum #{id}
+      <Typography variant="h4">
+        {id ? `Fotos del Álbum #${id}` : "Todas las Fotos"}
       </Typography>
       <Button
-          variant="outlined"
-          color="info"
           component={Link}
-          to="/"
-          sx={{ mb: 2, mr: 2 }}
+          to={id ? `/albums/${id}` : "/albums"}
       >
         Regresar
       </Button>

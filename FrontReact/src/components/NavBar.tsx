@@ -8,6 +8,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ListIcon from '@mui/icons-material/List';
 import { Link } from "react-router-dom";
 
+
 function NavBar() {
   return (
     <AppBar position="static">
@@ -33,7 +34,7 @@ function NavBar() {
         <Button color="inherit" component={Link} to="/photos" startIcon={<InsertPhotoIcon />}>
           Photos
         </Button>
-        <Button color="inherit" component={Link} to="/todo" startIcon={<ListIcon />}>
+        <Button color="inherit" component={Link} to="/todos" startIcon={<ListIcon />}>
           Todos
         </Button>
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+
 import {
   Button,
   Container,
@@ -13,18 +13,27 @@ import {
   Alert,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchCommentsByPostId, deleteComment } from '../features/comments/commentSlice';
+import {
+    fetchComments,
+    fetchCommentsByPostId,
+    deleteComment,
+} from '../features/comments/commentSlice';
+import { Link, useParams } from "react-router-dom";
 
 function Comments() {
-  const { id } = useParams<{ id: string }>();
+
   const dispatch = useAppDispatch();
   const { comments, loading, error } = useAppSelector((state) => state.comments);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchCommentsByPostId(Number(id)));
-    }
-  }, [dispatch, id]);
+    const { id } = useParams<{ id: string }>();
+
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchCommentsByPostId(Number(id)));
+        } else {
+            dispatch(fetchComments());
+        }
+    }, [dispatch, id]);
 
   const handleDeleteComment = async (commentId: number) => {
     if (window.confirm('¿Estás seguro de eliminar este comentario?')) {
@@ -46,34 +55,36 @@ function Comments() {
 
   return (
     <Container sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom>
-        Comentarios del Post #{id}
-      </Typography>
+        <Typography variant="h4" gutterBottom>
+            {id ? `Comentarios del Post #${id}` : "Todos los Comentarios"}
+        </Typography>
 
-      <Button
-        variant="contained"
-        color="secondary"
-        component={Link}
-        to={`/posts/${id}`}
-        sx={{ mb: 2, mr: 2 }}
-      >
-        Regresar al Post
-      </Button>
-
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={`/posts/${id}/comments/new`}
-        sx={{ mb: 2 }}
-      >
-        Crear Comentario
-      </Button>
+        <Button
+            variant="outlined"
+            color="info"
+            component={Link}
+            to={id ? `/posts/${id}` : "/posts"}
+            sx={{ mb: 2, mr: 2 }}
+        >
+            Regresar
+        </Button>
+        {id && (
+            <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={`/posts/${id}/comments/new`}
+                sx={{ mb: 2 }}
+            >
+                Crear Comentario
+            </Button>
+        )}
 
       <Table sx={{ mt: 2 }}>
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
+            <TableCell>Post ID</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Body</TableCell>
@@ -84,6 +95,7 @@ function Comments() {
           {comments.map((comment) => (
             <TableRow key={comment.id}>
               <TableCell>{comment.id}</TableCell>
+              <TableCell>{comment.postId}</TableCell>
               <TableCell>{comment.name}</TableCell>
               <TableCell>{comment.email}</TableCell>
               <TableCell>{comment.body}</TableCell>

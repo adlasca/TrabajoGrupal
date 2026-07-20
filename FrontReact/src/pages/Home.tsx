@@ -48,7 +48,7 @@ function Home() {
             icon: <ListIcon sx={{ fontSize: 60, color: 'primary.main' }} />,
             title: 'Todo',
             description: 'Gestiona tus tareas',
-            path: '/userTodos'
+            path: '/todos'
         }
     ];
 

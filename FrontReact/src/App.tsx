@@ -13,6 +13,8 @@ import UserTodos from './pages/UserTodos';
 import UserAlbums from './pages/UserAlbums';
 import Albums from './pages/Albums';
 import Photos from './pages/Photos';
+import Todos from "./pages/Todos";
+
 
 function App() {
   return (
@@ -28,6 +30,12 @@ function App() {
           <Route path="/posts/:id/comments" element={<Comments />} />
           <Route path="/posts/:id/comments/new" element={<CommentForm />} />
           <Route path="/comments/:id" element={<CommentForm />} />
+
+
+          <Route path="/comments" element={<Comments />} />
+          <Route path="/photos" element={<Photos />} />
+          <Route path="/todos" element={<Todos />} />
+
 
 
           <Route path="/users" element={<Users />} />
