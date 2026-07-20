@@ -178,15 +178,6 @@ function Users() {
                             color="secondary"
                             variant="outlined"
                             component={Link}
-                            to={`/users/${user.id}/todos`}
-                            sx={{ mr: 1 }}
-                        >
-                          ToDos
-                        </Button>
-                        <Button
-                            color="secondary"
-                            variant="outlined"
-                            component={Link}
                             to={`/users/${user.id}/albums`}
                             sx={{ mr: 1 }}
                         >

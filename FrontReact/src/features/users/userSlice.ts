@@ -24,7 +24,7 @@ export const fetchUsers = createAsyncThunk(
       const response = await api.get<User[]>('/users');
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
@@ -36,7 +36,7 @@ export const fetchUserById = createAsyncThunk(
       const response = await api.get<User>(`/users/${id}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
@@ -48,7 +48,7 @@ export const createUser = createAsyncThunk(
       const response = await api.post<User>('/users', user);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
@@ -60,7 +60,7 @@ export const updateUser = createAsyncThunk(
       await api.put(`/users/${id}`, user);
       return { id, ...user } as User;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
@@ -72,7 +72,7 @@ export const deleteUser = createAsyncThunk(
       await api.delete(`/users/${id}`);
       return id;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );

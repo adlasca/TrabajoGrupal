@@ -216,7 +216,6 @@ function CommentForm() {
                   : "Crear Nuevo Comentario"}
             </Typography>
 
-            {/* Selección del Post */}
             <FormControl fullWidth>
               <InputLabel>Post</InputLabel>
 

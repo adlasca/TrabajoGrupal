@@ -14,7 +14,6 @@ import CommentForm from './pages/CommentForm';
 import Users from './pages/Users';
 import UserDetail from './pages/UserDetail';
 import UserPosts from './pages/UserPosts';
-import UserTodos from './pages/UserTodos';
 import UserAlbums from './pages/UserAlbums';
 
 import Albums from './pages/Albums';
@@ -135,12 +134,6 @@ function App() {
                 <Route
                     path="/users/:id/posts"
                     element={<UserPosts/>}
-                />
-
-
-                <Route
-                    path="/users/:id/todos"
-                    element={<UserTodos/>}
                 />
 
 

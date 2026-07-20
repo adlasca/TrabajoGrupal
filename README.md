@@ -5,8 +5,8 @@
 | Integrantes                      | CI         |
 |:---------------------------------|:-----------|
 | Ángelo Damian Lascano Puruncajas | 1750337360 |
-| Pamela Nicole Fernandez Espinoza | 175337360  |
-| Billy Steven Moreno Chinataxi    | 175337360  |
+| Pamela Nicole Fernandez Espinoza | 1728746312 |
+| Billy Steven Moreno Chinataxi    | 1722313069 |
 
 
 ## Tabla de mapeo
@@ -226,7 +226,34 @@ src/
 # Capturas de la aplicación Web
 
 ---
+### USERS CRUD
+![](images/Front/Users.png)
 
+![](images/Front/Crud.png)
+
+![](images/Front/UsersCreate.png)
+
+![](images/Front/UsersEditar.png)
+
+![](images/Front/UsersDelete.png)
+
+### POST CRUD
+![](images/Front/Posts.png)
+
+![](images/Front/PostCrear.png)
+
+![](images/Front/PostEditar.png)
+
+![](images/Front/PostEliminar.png)
+
+### COMMENTS CRUD
+![Comments.png](images/Front/Comments.png)
+
+![](images/Front/CommentsCrear.png)
+
+![](images/Front/CommentsEditar.png)
+
+![](images/Front/CommentsEliminar.png)
 ---
 ## Instrucciones y Orden de Ejecución
 
@@ -254,4 +281,55 @@ Una vez que la base de datos está lista, se procede a levantar la API REST para
 3. Espera a que la consola confirme que el servidor HTTP nativo está inicializado y escuchando peticiones en el puerto 8080:
      ```
    WEB server is up! http://localhost:8080/api
-    ```
+    ``` 
+##  Instrucciones y Orden Estricto de Ejecución
+
+Para garantizar el correcto funcionamiento del sistema Full-Stack sin errores de conexión ni dependencias huérfanas, es **obligatorio seguir el orden estricto de arranque** descrito a continuación:
+
+---
+
+### Paso 1: Base de Datos (PostgreSQL)
+Antes de iniciar el servidor Java, el motor de base de datos relacional debe estar activo y accesible para que HikariCP pueda gestionar el *pool* de conexiones:
+1. Asegúrate de que el servicio de **PostgreSQL** esté ejecutándose en tu sistema local en el puerto por defecto (`5432`).
+2. Verifica que exista la base de datos configurada en el proyecto (`tarea_grupal_db`) y que sea accesible con las credenciales declaradas en el archivo `application.yaml` (`username: postgres`, `password: password123`).
+
+---
+
+### Paso 2: Servidor Backend (Helidon SE 4.5)
+Una vez que la base de datos está lista, se procede a levantar la API REST para que ejecute el DDL (creación e inspección de tablas con soporte `ON DELETE CASCADE`) y habilite los endpoints:
+1. Abre una terminal en tu sistema operativo y navega a la raíz de la carpeta del backend:
+   bash
+   cd tarea-grupal/backend/
+
+
+2. Compila y ejecuta el proyecto mediante el *wrapper* de Gradle incluido (este paso no requiere tener Gradle instalado previamente en tu computadora):
+   bash
+### En Linux / macOS / Git Bash:
+./gradlew run
+
+### En Windows (Símbolo del sistema / PowerShell):
+gradlew run
+
+
+3. Espera a que la consola confirme que el servidor HTTP nativo está inicializado y escuchando peticiones en el **puerto 8080**:
+> WEB server is up! http://localhost:8080/api
+>
+### Paso 3: Cliente Frontend (React + Vite + Redux Toolkit)
+Con el servidor Java esperando peticiones HTTP en segundo plano, se inicia la interfaz de usuario en una segunda terminal independiente:
+1. Abre una **nueva ventana de terminal** (manteniendo activa y corriendo la terminal del backend) y navega a la carpeta del frontend:
+   bash
+   cd tarea-grupal/web/
+
+
+2. Instala las dependencias del package.json, compila el tipado estático y levanta el servidor de desarrollo en un solo comando:
+   bash
+   npm install && npm run dev
+
+
+3. Abre tu navegador web de preferencia y accede a la aplicación local desde el **puerto 5173** (origen por defecto habilitado en las reglas CORS del backend):
+> http://localhost:5173
+>
+###  Orden de Detención del Sistema
+Para finalizar la ejecución del proyecto y cerrar los puertos de manera segura:
+1. Detén el servidor frontend en su respectiva terminal presionando la combinación de teclas **Ctrl + C**.
+2. Detén el servidor backend en su terminal presionando **Ctrl + C** (este procedimiento garantizará el cierre ordenado del servidor HTTP y la liberación inmediata de las conexiones abiertas por HikariCP en PostgreSQL).

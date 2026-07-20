@@ -30,16 +30,10 @@ import {
 
 import type { Photo } from '../models/Photo';
 
-
-
 function Photos() {
 
-
   const { id } = useParams<{id:string}>();
-
   const dispatch = useAppDispatch();
-
-
   const {
     photos,
     loading,
@@ -47,199 +41,78 @@ function Photos() {
   } = useAppSelector(
       (state)=>state.photos
   );
-
-
-
   const [openDialog,setOpenDialog]=useState(false);
-
-
-
   const [newPhoto,setNewPhoto]=useState<Omit<Photo,'id'>>({
 
     albumId:id ? Number(id) : 1,
-
     title:"",
-
     url:"",
-
     thumbnailUrl:""
-
   });
-
-
-
-
 
   const [snackbar,setSnackbar]=useState<{
-
     open:boolean;
-
     message:string;
-
     severity:"success"|"error"
-
   }>({
-
     open:false,
-
     message:"",
-
     severity:"success"
-
   });
 
-
-
-
-
-
-  // Cargar fotos según contexto
-
   useEffect(()=>{
-
-
     if(id){
-
-
       dispatch(
           fetchPhotosByAlbumId(
               Number(id)
           )
       );
-
-
     }else{
-
-
       dispatch(
           fetchPhotos()
       );
-
-
     }
-
-
   },[dispatch,id]);
 
-
-
-
-
-
-
-
-
-  // Mostrar errores
-
   useEffect(()=>{
-
-
     if(error){
-
-
       setSnackbar({
-
         open:true,
-
         message:error,
-
         severity:"error"
-
       });
-
-
     }
-
-
   },[error]);
 
-
-
-
-
-
-
-
-
-  // Crear foto
-
   const handleCreatePhoto = async()=>{
-
-
     if(
         !newPhoto.title.trim() ||
         !newPhoto.url.trim()
     ){
-
-
       setSnackbar({
-
         open:true,
-
         message:"Título y URL son obligatorios",
-
         severity:"error"
-
       });
-
-
       return;
-
-
     }
-
-
-
-
-
     try{
-
-
       await dispatch(
           createPhoto(newPhoto)
       ).unwrap();
-
-
-
-
       setSnackbar({
-
         open:true,
-
         message:"Foto creada correctamente",
-
         severity:"success"
-
       });
-
-
-
-
-
       setOpenDialog(false);
-
-
-
-
-
       setNewPhoto({
-
         albumId:id ? Number(id) : 1,
-
         title:"",
-
         url:"",
-
         thumbnailUrl:""
-
       });
 
-
-
-
-
-
-      // Recargar según ubicación
 
       if(id){
 

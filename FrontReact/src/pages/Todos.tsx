@@ -1,189 +1,262 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
-    Grid,
-    Card,
-    CardContent,
-    Typography,
-    Button,
     Container,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    TextField,
+    Checkbox
 } from "@mui/material";
+import { Link } from 'react-router-dom';
+import {
+    useAppDispatch,
+    useAppSelector
+} from "../hooks/redux";
 
-import PeopleIcon from "@mui/icons-material/People";
-import ArticleIcon from "@mui/icons-material/Article";
-import PhotoAlbumIcon from "@mui/icons-material/PhotoAlbum";
-import CommentIcon from "@mui/icons-material/Comment";
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
-import ChecklistIcon from "@mui/icons-material/Checklist";
+import {
+    fetchTodos,
+    createTodo,
+    updateTodo,
+    deleteTodo
+} from "../features/todos/todoSlice";
 
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-
-import { fetchUsers } from "../features/users/userSlice";
-import { fetchPosts } from "../features/posts/postSlice";
-import { fetchAlbums } from "../features/albums/albumSlice";
-import { fetchComments } from "../features/comments/commentSlice";
-import { fetchPhotos } from "../features/photos/photoSlice";
-import { fetchTodos } from "../features/todos/todoSlice";
+import type { Todo } from "../models/Todo";
 
 function Todos() {
+
     const dispatch = useAppDispatch();
 
-    const { users } = useAppSelector((state) => state.users);
-    const { posts } = useAppSelector((state) => state.posts);
-    const { albums } = useAppSelector((state) => state.albums);
-    const { comments } = useAppSelector((state) => state.comments);
-    const { photos } = useAppSelector((state) => state.photos);
-    const { todos } = useAppSelector((state) => state.todos);
+    const { todos, loading } = useAppSelector(
+        state => state.todos
+    );
+
+    const [title, setTitle] = useState("");
+    const [userId, setUserId] = useState(1);
+
+    // Nuevo estado para editar
+    const [editandoId, setEditandoId] = useState<number | null>(null);
+    const [completed, setCompleted] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchUsers());
-        dispatch(fetchPosts());
-        dispatch(fetchAlbums());
-        dispatch(fetchComments());
-        dispatch(fetchPhotos());
         dispatch(fetchTodos());
     }, [dispatch]);
 
+    // Crear o actualizar
+    const guardar = () => {
+
+        const todo: Omit<Todo, "id"> = {
+            userId,
+            title,
+            completed
+        };
+
+        if (editandoId === null) {
+
+            dispatch(createTodo(todo));
+
+        } else {
+
+            dispatch(updateTodo({
+                id: editandoId,
+                todo
+            }));
+
+            setEditandoId(null);
+        }
+
+        setTitle("");
+        setUserId(1);
+        setCompleted(false);
+    };
+
+    // Llenar formulario
+    const editar = (todo: Todo) => {
+
+        setEditandoId(todo.id!);
+        setTitle(todo.title);
+        setUserId(todo.userId);
+        setCompleted(todo.completed);
+
+    };
+
+    // Cambiar estado desde el checkbox
+    const cambiarEstado = (todo: Todo) => {
+
+        dispatch(updateTodo({
+            id: todo.id!,
+            todo: {
+                userId: todo.userId,
+                title: todo.title,
+                completed: !todo.completed
+            }
+        }));
+
+    };
+
+    const eliminar = (id: number) => {
+
+        dispatch(deleteTodo(id));
+
+        if (editandoId === id) {
+            setEditandoId(null);
+            setTitle("");
+            setUserId(1);
+            setCompleted(false);
+        }
+
+    };
+
+    if (loading) {
+
+        return (
+            <Typography align="center">
+                Cargando...
+            </Typography>
+        );
+
+    }
+
     return (
+
         <Container sx={{ mt: 5 }}>
-            <Typography
-                variant="h4"
-                gutterBottom sx={{ mt: 5, textAlign: "center" }}>
-                Dashboard General
-            </Typography>
 
             <Typography
+                variant="h3"
                 align="center"
-                color="text.secondary"
-                sx={{ mb: 5 }}
             >
-                Resumen de toda la información del sistema
+                Tareas
             </Typography>
+            <Button
+                variant="outlined"
+                color="warning"
+                component={Link}
+                to="/"
+                sx={{mb:2, mr:2}}
 
-            <Grid container spacing={3}>
+            >
 
-                <Grid size={{xs:12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <PeopleIcon color="primary" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Usuarios</Typography>
-                            <Typography variant="h3">{users.length}</Typography>
+                Regresar
 
-                            <Button
-                                component={Link}
-                                to="/users"
-                                variant="contained"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Usuarios
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+            </Button>
 
-                <Grid size={{xs: 12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <ArticleIcon color="warning" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Posts</Typography>
-                            <Typography variant="h3">{posts.length}</Typography>
 
-                            <Button
-                                component={Link}
-                                to="/posts"
-                                variant="contained"
-                                color="warning"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Posts
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+            <Paper sx={{ p: 3, mt: 3 }}>
 
-                <Grid size={{xs:12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <PhotoAlbumIcon color="success" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Álbumes</Typography>
-                            <Typography variant="h3">{albums.length}</Typography>
+                <TextField
+                    label="Usuario"
+                    type="number"
+                    value={userId}
+                    onChange={(e) =>
+                        setUserId(Number(e.target.value))
+                    }
+                />
 
-                            <Button
-                                component={Link}
-                                to="/albums"
-                                variant="contained"
-                                color="success"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Álbumes
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                <TextField
+                    label="Título"
+                    value={title}
+                    onChange={(e) =>
+                        setTitle(e.target.value)
+                    }
+                    sx={{ ml: 2 }}
+                />
 
-                <Grid size={{xs:12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <CommentIcon color="secondary" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Comentarios</Typography>
-                            <Typography variant="h3">{comments.length}</Typography>
+                <Button
+                    variant="contained"
+                    onClick={guardar}
+                    sx={{ ml: 2 }}
+                >
+                    {editandoId === null ? "Crear" : "Actualizar"}
+                </Button>
 
-                            <Button
-                                component={Link}
-                                to="/comments"
-                                variant="contained"
-                                color="secondary"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Comentarios
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+            </Paper>
 
-                <Grid size={{xs:12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <InsertPhotoIcon color="info" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Fotos</Typography>
-                            <Typography variant="h3">{photos.length}</Typography>
+            <TableContainer
+                component={Paper}
+                sx={{ mt: 4 }}
+            >
 
-                            <Button
-                                component={Link}
-                                to="/photos"
-                                variant="contained"
-                                color="info"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Fotos
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                <Table>
 
-                <Grid size={{xs:12, md:4}}>
-                    <Card>
-                        <CardContent sx={{ textAlign: "center" }}>
-                            <ChecklistIcon color="error" sx={{ fontSize: 60 }} />
-                            <Typography variant="h5">Tareas</Typography>
-                            <Typography variant="h3">{todos.length}</Typography>
+                    <TableHead>
 
-                            <Button
-                                component={Link}
-                                to="/todos"
-                                variant="contained"
-                                color="error"
-                                sx={{ mt: 2 }}
-                            >
-                                Ver Tareas
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                        <TableRow>
 
-            </Grid>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Usuario</TableCell>
+                            <TableCell>Título</TableCell>
+                            <TableCell>Estado</TableCell>
+                            <TableCell>Acciones</TableCell>
+
+                        </TableRow>
+
+                    </TableHead>
+
+                    <TableBody>
+
+                        {todos.map((todo) => (
+
+                            <TableRow key={todo.id}>
+
+                                <TableCell>{todo.id}</TableCell>
+
+                                <TableCell>{todo.userId}</TableCell>
+
+                                <TableCell>{todo.title}</TableCell>
+
+                                <TableCell>
+
+                                    <Checkbox
+                                        checked={todo.completed}
+                                        onChange={() => cambiarEstado(todo)}
+                                    />
+
+                                    {todo.completed
+                                        ? "Completada"
+                                        : "Pendiente"}
+
+                                </TableCell>
+
+                                <TableCell>
+
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => editar(todo)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        Editar
+                                    </Button>
+
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        onClick={() => eliminar(todo.id!)}
+                                    >
+                                        Eliminar
+                                    </Button>
+
+                                </TableCell>
+
+                            </TableRow>
+
+                        ))}
+
+                    </TableBody>
+
+                </Table>
+
+            </TableContainer>
+
         </Container>
+
     );
+
 }
 
 export default Todos;

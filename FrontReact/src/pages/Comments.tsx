@@ -75,11 +75,7 @@ function Comments() {
 
     if (loading) {
         return (
-            <Container
-                sx={{
-                    mt: 5,
-                    textAlign: "center"
-                }}
+            <Container sx={{mt: 5, textAlign: "center"}}
             >
                 <Typography>
                     Cargando comentarios...
@@ -135,73 +131,23 @@ function Comments() {
                 <TableHead>
                     <TableRow>
                         <TableCell>ID</TableCell>
-
                         <TableCell>Nombre</TableCell>
-
-
-                        <TableCell>
-                            Email
-                        </TableCell>
-
-
-                        <TableCell>
-                            Comentario
-                        </TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Comentario</TableCell>
                         <TableCell>Post ID</TableCell>
-
-
-                        <TableCell>
-                            Acciones
-                        </TableCell>
-
-
+                        <TableCell>Acciones</TableCell>
                     </TableRow>
-
-
                 </TableHead>
-
-
                 <TableBody>
-
-
                     {
                         comments.map((comment) => (
-
-
-                            <TableRow
-                                key={comment.id}
-                            >
-
-
+                            <TableRow key={comment.id}>
+                                <TableCell>{comment.id}</TableCell>
+                                <TableCell>{comment.name}</TableCell>
+                                <TableCell>{comment.email}</TableCell>
+                                <TableCell>{comment.body}</TableCell>
+                                <TableCell>{comment.postId}</TableCell>
                                 <TableCell>
-                                    {comment.id}
-                                </TableCell>
-
-
-
-
-
-                                <TableCell>
-                                    {comment.name}
-                                </TableCell>
-
-
-                                <TableCell>
-                                    {comment.email}
-                                </TableCell>
-
-
-                                <TableCell>
-                                    {comment.body}
-                                </TableCell>
-                                <TableCell>
-                                    {comment.postId}
-                                </TableCell>
-
-
-                                <TableCell>
-
-
                                     <Button
                                         variant="outlined"
                                         color="primary"
@@ -211,12 +157,8 @@ function Comments() {
                                             mr: 1
                                         }}
                                     >
-
                                         Editar
-
                                     </Button>
-
-
                                     <Button
                                         variant="outlined"
                                         color="error"
@@ -226,51 +168,19 @@ function Comments() {
                                             )
                                         }
                                     >
-
                                         Eliminar
-
                                     </Button>
-
-
                                 </TableCell>
-
-
                             </TableRow>
-
-
                         ))
                     }
-
-
                 </TableBody>
-
-
             </Table>
-
-
-            <Snackbar
-                open={!!error}
-                autoHideDuration={3000}
-            >
-
-                <Alert
-                    severity="error"
-                >
-
-                    {error}
-
-
-                </Alert>
-
-
+            <Snackbar open={!!error} autoHideDuration={3000}>
+                <Alert severity="error">{error}</Alert>
             </Snackbar>
-
-
         </Container>
-
-
     );
-
 }
 
 

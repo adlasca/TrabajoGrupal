@@ -69,7 +69,7 @@ export const updatePost = createAsyncThunk(
       await api.put(`/posts/${id}`, post);
       return { id, ...post } as Post;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
@@ -81,7 +81,7 @@ export const deletePost = createAsyncThunk(
       await api.delete(`/posts/${id}`);
       return id;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.error??error.message);
     }
   }
 );
