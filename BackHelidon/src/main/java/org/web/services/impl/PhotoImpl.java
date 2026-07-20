@@ -39,7 +39,7 @@ public class PhotoImpl implements HttpService {
 
         photoService.findById(id).ifPresentOrElse(res::send, ()->{
             res.status(Status.NOT_FOUND_404)
-                    .send(Map.of("message", "Photo not found"));
+                    .send(Map.of("error: ", "Photo not found"));
         });
     }
 

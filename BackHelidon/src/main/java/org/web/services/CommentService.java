@@ -27,16 +27,16 @@ public class CommentService {
     }
 
     public Comment create(Comment comment) {
-        if(comment.postId() ==null || postRepository.findById(comment.id()).isEmpty()) {
+        if(comment.postId() ==null || postRepository.findById(comment.postId()).isEmpty()) {
             throw new ExceptionHandler("Post not found");
         }
         return commentRepository.create(comment);
     }
     public boolean update(Integer id,Comment comment) {
-        if(commentRepository.findById(comment.id()).isEmpty()) {
+        if(commentRepository.findById(id).isEmpty()) {
             return false;
         }
-        if(comment.postId() ==null || postRepository.findById(comment.id()).isEmpty()) {
+        if(comment.postId() ==null || postRepository.findById(comment.postId()).isEmpty()) {
             throw new ExceptionHandler("Post not found");
         }
         return commentRepository.update(id,comment)>0;

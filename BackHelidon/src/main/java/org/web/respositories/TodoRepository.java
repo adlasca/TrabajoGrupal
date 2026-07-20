@@ -69,7 +69,7 @@ public class TodoRepository {
     public long update(Integer id, Todo todo){
         return dbClient.execute()
                 .createNamedUpdate("update-todo")
-                .addParam("id", todo.id())
+                .addParam("id", id)
                 .addParam("user_id",todo.userId())
                 .addParam("title",todo.title())
                 .addParam("completed", todo.completed())

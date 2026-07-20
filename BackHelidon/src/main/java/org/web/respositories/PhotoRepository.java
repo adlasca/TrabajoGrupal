@@ -26,15 +26,16 @@ public class PhotoRepository {
 
     public List<Photo> findAll(){
         return dbClient.execute()
-                .createNamedGet("select-photos")
+                .createNamedQuery("select-photos")
                 .execute()
                 .map(this::mapRow)
-                .stream().toList();
+                .toList();
     }
 
     public Optional<Photo> findById(Integer id){
         return dbClient.execute()
                 .createNamedGet("select-photoId")
+                .addParam("id", id)
                 .execute()
                 .map(this::mapRow);
     }
@@ -65,7 +66,7 @@ public class PhotoRepository {
     public long update(Integer id, Photo photo){
         return dbClient.execute()
                 .createNamedUpdate("update-photo")
-                .addParam("id",photo.id())
+                .addParam("id",id)
                 .addParam("album_id",photo.albumId())
                 .addParam("thumbnail_url",photo.thumbnailUrl())
                 .addParam("url",photo.url())

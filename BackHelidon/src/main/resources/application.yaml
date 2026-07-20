@@ -45,7 +45,7 @@ db:
     select-postId: "SELECT * FROM posts WHERE id = :id"
 
     insert-user: "INSERT INTO users (name, username, email, address_street, address_suite, address_city, address_zipcode, address_geo_lat, address_geo_lng, phone, website, company_name, company_catch_phrase, company_bs) VALUES (:name, :username, :email, :addressStreet, :addressSuite, :addressCity, :addressZipcode, :addressGeoLat, :addressGeoLng, :phone, :website, :companyName, :companyCatchPhrase, :companyBs) RETURNING id"
-    insert-todo: "INSERT INTO todos (title, completed, user_id) VALUES (:title, completed, user_id) RETURNING id"
+    insert-todo: "INSERT INTO todos (title, completed, user_id) VALUES (:title, :completed, :user_id) RETURNING id"
     insert-album: "INSERT INTO albums (title, user_id) VALUES (:title, :user_id) RETURNING id"
     insert-photo: "INSERT INTO photos (title, url, thumbnail_url, album_id) VALUES (:title, :url, :thumbnail_url, :album_id) RETURNING id"
     insert-comment: "INSERT INTO comments (name, email, post_id, body) VALUES (:name, :email, :post_id, :body) RETURNING id"
