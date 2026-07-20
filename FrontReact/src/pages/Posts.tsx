@@ -100,8 +100,17 @@ function Posts() {
         </Typography>
 
         <Button
+            variant="outlined"
+            color="warning"
+            component={Link}
+            to="/"
+            sx={{ mb: 2, mr: 2 }}
+        >
+          Regresar
+        </Button>
+        <Button
           variant="contained"
-          color="primary"
+          color="warning"
           sx={{ mb: 2 }}
           onClick={() => setOpenDialog(true)}
         >

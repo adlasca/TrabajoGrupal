@@ -1,4 +1,5 @@
-import { Container, Typography, Box, Paper } from "@mui/material";
+import { Container, Typography, Box, Paper, Button } from "@mui/material";
+import {Link} from "react-router-dom";
 
 function About() {
   return (
@@ -30,6 +31,17 @@ function About() {
         <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
           Tecnologías: React, TypeScript, Redux Toolkit, Material-UI, React Router
         </Typography>
+        <Button
+            variant="outlined"
+            color="secondary"
+            component={Link}
+            to="/"
+            sx={{ mb: 2, mr: 2 }}
+        >
+          Regresar
+        </Button>
+
+
       </Paper>
     </Container>
   );

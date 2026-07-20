@@ -54,6 +54,23 @@ function Albums() {
       <Typography variant="h4" gutterBottom>
         Álbumes
       </Typography>
+      <Button
+          variant="outlined"
+          color="info"
+          component={Link}
+          to="/"
+          sx={{ mb: 2, mr: 2 }}
+      >
+        Regresar
+      </Button>
+      <Button
+          variant="contained"
+          color="info"
+          sx={{ mb: 2 }}
+          //onClick={() => setOpenDialog(true)}
+      >
+        Crear Album
+      </Button>
 
       <Table sx={{ mt: 2 }}>
         <TableHead>
