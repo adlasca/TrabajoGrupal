@@ -5,17 +5,17 @@ import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
-import org.web.db.User;
-import org.web.services.UserService;
+import org.web.db.Todo;
+import org.web.services.TodoService;
 
 import java.util.Map;
 
-public class UserImpl implements HttpService {
+public class TodoImpl implements HttpService {
 
-    private final UserService userService;
+    private final TodoService todoService;
 
-    public UserImpl(UserService userService) {
-        this.userService = userService;
+    public TodoImpl(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @Override
@@ -25,52 +25,56 @@ public class UserImpl implements HttpService {
                 .post("/",this::create)
                 .put("/{id}",this::update)
                 .delete("/{id}",this::delete);
+
     }
 
-    private void findAll(ServerRequest req , ServerResponse  res) {
+    private void findAll(ServerRequest req, ServerResponse res) {
         res
                 .header("Content-Type", "application/json")
-                .send(userService.findAll());
+                .send(todoService.findAll());
     }
-    private void findById(ServerRequest req , ServerResponse res) {
+
+    private void findById(ServerRequest req, ServerResponse res) {
         Integer id = Integer.parseInt(req.path().pathParameters().get("id"));
 
-        userService.findById(id)
+        todoService.findById(id)
                 .ifPresentOrElse(
                         res::send,
-                        ()-> res.status(Status.NOT_FOUND_404)
-                                .send(Map.of("error: ","no encontrado")));
+                        ()->res.status(Status.NOT_FOUND_404)
+                                .send(Map.of("error: ", "El usuario no encontrado"))
+                );
     }
 
-    private void create(ServerRequest req , ServerResponse res) {
-        User user = req.content().as(User.class);
-        User saved = userService.create(user);
+    private void create(ServerRequest req, ServerResponse res) {
+        Todo todo = req.content().as(Todo.class);
+        Todo saved = todoService.create(todo);
 
         res.status(Status.CREATED_201).send(saved);
     }
 
-    private  void update(ServerRequest req , ServerResponse res) {
-        Integer id = Integer.parseInt(req.path().pathParameters().get("id"));
-        User datosActualizar = req.content().as(User.class);
-
-        boolean actualizado = userService.update(id, datosActualizar);
-        if(actualizado) {
-            res.status(Status.NO_CONTENT_204).send();
-        }else {
-            res.status(Status.NOT_FOUND_404).send();
-        }
-    }
-
-    private void delete(ServerRequest req , ServerResponse res) {
+    private void update(ServerRequest req, ServerResponse res) {
         Integer id = Integer.parseInt(req.path().pathParameters().get("id"));
 
-        boolean eliminado =userService.delete(id);
-        if(eliminado) {
+        Todo datosActualizar = req.content().as(Todo.class);
+
+        boolean actualizado = todoService.update(id, datosActualizar);
+        if (actualizado) {
             res.status(Status.NO_CONTENT_204).send();
         }else{
             res.status(Status.NOT_FOUND_404).send();
         }
 
+    }
+
+    private void delete(ServerRequest req, ServerResponse res) {
+        Integer id = Integer.parseInt(req.path().pathParameters().get("id"));
+
+        boolean deleted = todoService.delete(id);
+        if (deleted) {
+            res.status(Status.NO_CONTENT_204).send();
+        }else{
+            res.status(Status.NOT_FOUND_404).send();
+        }
     }
 
 }

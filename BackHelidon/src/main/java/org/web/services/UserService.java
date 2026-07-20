@@ -28,13 +28,11 @@ public class UserService {
     }
 
     public boolean update(Integer id, User user) {
-        long rowsAffected = userRepository.update(id, user);
-        return rowsAffected > 0;
+        return userRepository.update(id, user) > 0;
     }
 
     public boolean delete(Integer id) {
-        long rowsAffected = userRepository.deleteById(id);
-        return rowsAffected > 0;
+        return userRepository.deleteById(id) > 0;
     }
 
 }
