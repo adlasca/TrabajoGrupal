@@ -33,18 +33,24 @@ export const fetchComments = createAsyncThunk(
 );
 
 export const fetchCommentsByPostId = createAsyncThunk(
-  'comments/fetchByPostId',
-  async (postId: number, { rejectWithValue }) => {
-    try {
-      const response = await api.get<Comment[]>(`/posts/${postId}/comments`);
-      return response.data;
-    }  catch (error: any) {
-      return rejectWithValue(
-          error.response?.data?.error ?? error.message
-      );
+    'comments/fetchByPostId',
+    async (postId: number, { rejectWithValue }) => {
+      try {
+        const response = await api.get<Comment[]>('/comments');
 
+        // return response.data.filter(
+        //     comment => comment.postId === postId
+        // );
+        return response.data.filter(
+            comment => Number(comment.postId) === Number(postId)
+        );
+
+      } catch (error: any) {
+        return rejectWithValue(
+            error.response?.data?.error ?? error.message
+        );
+      }
     }
-  }
 );
 
 export const fetchCommentById = createAsyncThunk(

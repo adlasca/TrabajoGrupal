@@ -121,7 +121,6 @@ function Posts() {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>User ID</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Body</TableCell>
               <TableCell>Acciones</TableCell>
@@ -131,7 +130,6 @@ function Posts() {
             {posts.map((post) => (
               <TableRow key={post.id}>
                 <TableCell>{post.id}</TableCell>
-                <TableCell>{post.userId}</TableCell>
                 <TableCell>{post.title}</TableCell>
                 <TableCell>{post.body}</TableCell>
                 <TableCell>
