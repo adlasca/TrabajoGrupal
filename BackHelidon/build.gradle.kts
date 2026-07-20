@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("io.freefair.lombok")version "9.5.0"
+    id("application")
 }
 
 group = "org.web"
@@ -10,6 +11,10 @@ repositories {
     mavenCentral()
 }
 
+application {
+    mainClass.set("org.web.Main")
+}
+
 dependencies {
 
     implementation("io.helidon.webserver:helidon-webserver:4.5.0")
@@ -17,7 +22,7 @@ dependencies {
     implementation("io.helidon.dbclient:helidon-dbclient:4.5.0")
     implementation("io.helidon.dbclient:helidon-dbclient-jdbc:4.5.0")
     implementation("io.helidon.dbclient:helidon-dbclient-hikari:4.5.0")
-    testImplementation("io.helidon.config:helidon-config-yaml:4.5.0")
+    implementation("io.helidon.config:helidon-config-yaml:4.5.0")
 
     implementation("org.projectlombok:lombok:1.18.46")
 
@@ -30,4 +35,12 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+sourceSets{
+    main{
+        output.setResourcesDir(
+            file("${buildDir}/classes/java/main")
+        )
+    }
 }

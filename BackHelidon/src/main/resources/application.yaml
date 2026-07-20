@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+cors:
+  paths:
+    - "path-pattern": "/"
+      "allow-origins": ["http://localhost:5173/"]
+      "allow-methods": ["GET","POST","PUT","DELETE","OPTIONS"]
+      "allow-headers": ["Content-Type"]
+
+db:
+  source: "jdbc"
+  connection:
+    url: "jdbc:postgresql://localhost:5432/progweb"
+    username: "postgres"
+    password: "password"
+    driverClassName: "org.postgresql.Driver"
+  statements:
+
+    create-users: "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(50), username VARCHAR(50), email VARCHAR(15), address_Street VARCHAR(50),address_Suite VARCHAR(50), address_City VARCHAR(15),address_ZipCode VARCHAR(10), address_Geo_Lat VARCHAR(10), address_Geo_Lng VARCHAR(10), phone VARCHAR(10), website VARCHAR(50),company_Name VARCHAR(50),company_Catch_Phrase VARCHAR(50), company_Bs VARCHAR(50))"
+    create-albums: "CREATE TABLE IF NOT EXISTS albums (id SERIAL PRIMARY KEY, title VARCHAR(50),user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE)"
+    create-photos: "CREATE TABLE IF NOT EXISTS photos (id SERIAL PRIMARY KEY, title VARCHAR(50),url VARCHAR(50),thumbnailUrl VARCHAR(50),album_id INT NOT NULL, FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE)"
+    create-posts: "CREATE  TABLE IF NOT EXISTS posts (id SERIAL PRIMARY KEY, title VARCHAR(50), user_id INT NOT NULL, body VARCHAR(50), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE)"
+    create-comments: "CREATE  TABLE IF NOT EXISTS comments (id SERIAL PRIMARY KEY, name VARCHAR(50), email VARCHAR(50), post_id INT NOT NULL, body VARCHAR(50), FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE)"
+    create-todos: "CREATE TABLE IF NOT EXISTS albums (id SERIAL PRIMARY KEY, title VARCHAR(50),completed BOOLEAN,user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE)"
+
+    select-users: "SELECT * FROM users"
+    select-todos: "SELECT * FROM todos"
+    select-albums: "SELECT * FROM albums"
+    select-photos: "SELECT * FROM photos"
+    select-comments: "SELECT * FROM comments"
+    select-posts: "SELECT * FROM posts"
+
+    select-userId: "SELECT * FROM users WHERE id = :id"
+    select-todoId: "SELECT * FROM todos WHERE id = :id"
+    select-albumId: "SELECT * FROM albums WHERE id = :id"
+    select-photoId: "SELECT * FROM photos WHERE id = :id"
+    select-commentId: "SELECT * FROM comments WHERE id = :id"
+    select-postId: "SELECT * FROM posts WHERE id = :id"
+
+    insert-user: "INSERT INTO users (name, username, email, address_street, address_suite, address_city, address_zipcode, address_geo_lat, address_geo_lng, phone, website, company_name, company_catch_phrase, company_bs) VALUES (:name, :username, :email, :addressStreet, :addressSuite, :addressCity, :addressZipcode, :addressGeoLat, :addressGeoLng, :phone, :website, :companyName, :companyCatchPhrase, :companyBs) RETURNING id"
+    insert-todo: ""
+    insert-album: ""
+    insert-photo: ""
+    insert-comment: ""
+    insert-post: ""
+
+    update-user: "UPDATE users SET name = :name, username = :username, email = :email, address_street = :addressStreet, address_suite = :addressSuite, address_city = :addressCity, address_zipcode = :addressZipcode, address_geo_lat = :addressGeoLat, address_geo_lng = :addressGeoLng, phone = :phone, website = :website, company_name = :companyName, company_catch_phrase = :companyCatchPhrase, company_bs = :companyBs WHERE id = :id"
+    update-todo: "UPDATE todos SET title = :title, completed = :completed "
+    update-album: ""
+    update-photo: ""
+    update-comment: ""
+    update-post: ""
+
+    delete-user: "DELETE FROM users WHERE id = :id"
+    delete-todo: "DELETE FROM todos WHERE id = :id"
+    delete-album: "DELETE FROM albums WHERE id = :id"
+    delete-photo: "DELETE FROM photos WHERE id = :id"
+    delete-comment: "DELETE FROM comments WHERE id = :id"
+    delete-post: "DELETE FROM posts WHERE id = :id"
