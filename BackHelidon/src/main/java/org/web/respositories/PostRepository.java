@@ -59,4 +59,21 @@ public class PostRepository {
                 .build();
     }
 
+    public long update(Integer id, Post post){
+        return dbClient.execute()
+                .createNamedUpdate("update-post")
+                .addParam("id",post.id())
+                .addParam("user_id",post.userId())
+                .addParam("title",post.title())
+                .addParam("body", post.body())
+                .execute();
+    }
+
+    public long delete(Integer id){
+        return dbClient.execute()
+                .createNamedDelete("delete-post")
+                .addParam("id",id)
+                .execute();
+    }
+
 }

@@ -24,6 +24,8 @@ dependencies {
     implementation("io.helidon.dbclient:helidon-dbclient-hikari:4.5.0")
     implementation("io.helidon.config:helidon-config-yaml:4.5.0")
 
+    implementation("io.helidon.webserver:helidon-webserver-cors:4.5.0")
+
     implementation("org.projectlombok:lombok:1.18.46")
 
     implementation("org.postgresql:postgresql:42.7.3")
