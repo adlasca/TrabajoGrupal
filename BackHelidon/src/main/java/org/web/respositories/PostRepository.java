@@ -35,7 +35,8 @@ public class PostRepository {
 
     public Optional<Post> findById(Integer id){
         return dbClient.execute()
-                .createNamedGet("select-post")
+                .createNamedGet("select-postId")
+                .addParam("id",id)
                 .execute()
                 .map(this::mapRow);
     }
@@ -62,7 +63,7 @@ public class PostRepository {
     public long update(Integer id, Post post){
         return dbClient.execute()
                 .createNamedUpdate("update-post")
-                .addParam("id",post.id())
+                .addParam("id",id)
                 .addParam("user_id",post.userId())
                 .addParam("title",post.title())
                 .addParam("body", post.body())

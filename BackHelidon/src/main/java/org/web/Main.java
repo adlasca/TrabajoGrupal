@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         Config config = Config.create();
+        //Configuracion CORS
         CorsFeature corsFeature = CorsFeature.create(config.get("cors"));
 
         DbClient dbClient = DbClient.create(config.get("db"));
@@ -53,12 +54,12 @@ public class Main {
                 .addFeature(corsFeature)
                                 .routing(routing->{
                                     GlobalException.register(routing);
-                                    routing.register("/users",userImpl);
-                                    routing.register("/albums",albumImpl);
-                                    routing.register("/todos",todoImpl);
-                                    routing.register("/comments",commentImpl);
-                                    routing.register("/posts",postImpl);
-                                    routing.register("/photos",photoImpl);
+                                    routing.register("/api/users",userImpl);
+                                    routing.register("/api/albums",albumImpl);
+                                    routing.register("/api/todos",todoImpl);
+                                    routing.register("/api/comments",commentImpl);
+                                    routing.register("/api/posts",postImpl);
+                                    routing.register("/api/photos",photoImpl);
                                 })
                                         .build()
                                                 .start();

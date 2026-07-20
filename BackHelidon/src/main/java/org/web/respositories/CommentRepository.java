@@ -37,6 +37,7 @@ public class CommentRepository {
     public Optional<Comment> findById(Integer id){
         return dbClient.execute()
                 .createNamedGet("select-commentId")
+                .addParam("id", id)
                 .execute()
                 .map(this::mapRow);
     }
@@ -65,7 +66,7 @@ public class CommentRepository {
     public long update( Integer id,Comment comment){
         return dbClient.execute()
                 .createNamedUpdate("update-comment")
-                .addParam("id",comment.id())
+                .addParam("id", id)
                 .addParam("post_id", comment.postId())
                 .addParam("email", comment.email())
                 .addParam("name", comment.name())

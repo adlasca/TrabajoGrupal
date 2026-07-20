@@ -28,7 +28,9 @@ public class AlbumImpl implements HttpService {
     }
 
     private void findAll(ServerRequest req, ServerResponse res) {
-        res.send(albumService.findAll());
+
+        res.header("Content-Type", "application/json")
+                .send(albumService.findAll());
     }
 
     private void findById(ServerRequest req, ServerResponse res) {

@@ -26,6 +26,7 @@ public class PostService {
         return postRepository.findById(id);
     }
 
+
     public Post create(Post post) {
         if(post.userId()==null|| userRepository.findById(post.userId()).isEmpty()) {
             throw new ExceptionHandler("User Not Found");

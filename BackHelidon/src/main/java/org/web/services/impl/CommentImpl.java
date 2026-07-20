@@ -20,11 +20,18 @@ public class CommentImpl implements HttpService {
 
     @Override
     public void routing(HttpRules rules) {
+        rules.get("/",this::findAll)
+                .get("/{id}",this::findById)
+                .post("/",this::create)
+                .put("/{id}",this::update)
+                .delete("/{id}",this::delete);
 
     }
 
     private void findAll(ServerRequest req, ServerResponse res) {
-        res.send(commentService.findAll());
+
+        res.header("Content-Type", "application/json")
+                .send(commentService.findAll());
     }
 
     private void findById(ServerRequest req, ServerResponse res) {
@@ -51,6 +58,17 @@ public class CommentImpl implements HttpService {
         boolean updated = commentService.update(id, comment);
 
         if(updated) {
+            res.status(Status.NO_CONTENT_204).send();
+        }else{
+            res.status(Status.NOT_FOUND_404)
+                    .send(Map.of("error", "Comment Not Found"));
+        }
+    }
+
+    private void delete(ServerRequest req, ServerResponse res) {
+        Integer id = Integer.parseInt(req.path().pathParameters().get("id"));
+        boolean deleted = commentService.delete(id);
+        if(deleted) {
             res.status(Status.NO_CONTENT_204).send();
         }else{
             res.status(Status.NOT_FOUND_404)

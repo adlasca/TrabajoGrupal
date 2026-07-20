@@ -34,6 +34,7 @@ public class AlbumRepository {
     public Optional<Album> findById(Integer id){
         return dbClient.execute()
                 .createNamedGet("select-albumId")
+                .addParam("id", id)
                 .execute()
                 .map(this::mapRow);
     }
@@ -65,7 +66,7 @@ public class AlbumRepository {
     public long update(Integer id,Album album){
         return dbClient.execute()
                 .createNamedUpdate("update-album")
-                .addParam("id",album.id())
+                .addParam("id",id)
                 .addParam("title",album.title())
                 .addParam("user_id",album.userId())
                 .execute();

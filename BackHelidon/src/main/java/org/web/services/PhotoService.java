@@ -28,7 +28,7 @@ public class PhotoService {
     }
 
     public Photo create(Photo photo){
-        if(photo.albumId()==null|| photoRepository.findById(photo.albumId()).isEmpty()){
+        if(photo.albumId()==null|| albumRepository.findById(photo.albumId()).isEmpty()){
             throw new ExceptionHandler("Album Not Found");
         }
         return photoRepository.create(photo);

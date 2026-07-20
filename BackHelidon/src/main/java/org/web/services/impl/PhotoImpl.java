@@ -1,6 +1,5 @@
 package org.web.services.impl;
 
-import io.helidon.http.Http;
 import io.helidon.http.Status;
 import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
@@ -29,7 +28,9 @@ public class PhotoImpl implements HttpService {
     }
 
     private void findAll(ServerRequest req, ServerResponse res){
-        res.send(photoService.findAll());
+
+        res.header("Content-Type", "application/json")
+                .send(photoService.findAll());
     }
 
     private void findById(ServerRequest req, ServerResponse res){

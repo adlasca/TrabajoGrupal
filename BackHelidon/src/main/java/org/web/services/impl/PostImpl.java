@@ -9,6 +9,7 @@ import io.helidon.webserver.http.ServerResponse;
 import org.web.db.Post;
 import org.web.services.PostService;
 
+import java.util.List;
 import java.util.Map;
 
 public class PostImpl implements HttpService {
@@ -28,10 +29,13 @@ public class PostImpl implements HttpService {
                 .put("/{id}",this::update)
                 .delete("/{id}",this::delete);
 
+
     }
 
     private void findAll(ServerRequest req, ServerResponse res) {
-        postService.findAll();
+        res
+                .header("Content-Type", "application/json")
+                .send(postService.findAll());
     }
 
     private void findById(ServerRequest req, ServerResponse res) {
@@ -42,6 +46,7 @@ public class PostImpl implements HttpService {
                     .send(Map.of("message", "Post Not Found"));
         });
     }
+
 
     private void create(ServerRequest req, ServerResponse res) {
         Post post = req.content().as(Post.class);

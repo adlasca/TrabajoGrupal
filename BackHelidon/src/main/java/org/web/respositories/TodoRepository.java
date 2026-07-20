@@ -35,6 +35,7 @@ public class TodoRepository {
     public Optional<Todo> findById(Integer id){
         return dbClient.execute()
                 .createNamedGet("select-todoId")
+                .addParam("id", id)
                 .execute()
                 .map(this::mapRow);
     }

@@ -1,21 +1,26 @@
+#Configuración del puerto del servidor, en este caso 8080 por defecto
 server:
-  port: 8080
-  host: "0.0.0.0"
+  port: 8080  #Puerto
+  host: "0.0.0.0"   #En cualquier lugar
 
+#Configuración de permisos sobre quien puede o no usar el servidor, en este caso, la dirección de vite
 cors:
   paths:
-      - "path-pattern": "*"
-        "allow-origins": ["http://localhost:5173"]
-        "allow-methods": ["GET","POST","PUT","DELETE","OPTIONS"]
-        "allow-headers": ["Content-Type"]
+      - "path-pattern": "*"   #Acceso a todas las direcciones
+        "allow-origins": ["http://localhost:5173"]   #Origen permitido
+        "allow-methods": ["GET","POST","PUT","DELETE","OPTIONS"]  #Métodos permitidos
+        "allow-headers": ["Content-Type"]  #Tipo de contenido permitido
 
+#Configuración de la base de datos
 db:
   source: "jdbc"
   connection:
-    url: "jdbc:postgresql://localhost:5432/progweb"
-    username: "postgres"
-    password: "password"
-    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://localhost:5432/progweb"  #Dirección a la base de datos, en este caso postgres
+    username: "postgres"                             #Usuario de la base de datos
+    password: "password"                             #Contraseña de la base de datos, cambiar si es necesario
+    driverClassName: "org.postgresql.Driver"         #Nombre del driver a utilizar
+
+  #Sentencias SQL utilizadas para el CRUD de cada entidad incluyendo la creación de cada tabla el cual se ejecuta al iniciar el programa
   statements:
 
     create-users: "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(50), username VARCHAR(50), email VARCHAR(15), address_Street VARCHAR(50),address_Suite VARCHAR(50), address_City VARCHAR(15),address_ZipCode VARCHAR(10), address_Geo_Lat VARCHAR(10), address_Geo_Lng VARCHAR(10), phone VARCHAR(10), website VARCHAR(50),company_Name VARCHAR(50),company_Catch_Phrase VARCHAR(50), company_Bs VARCHAR(50))"
