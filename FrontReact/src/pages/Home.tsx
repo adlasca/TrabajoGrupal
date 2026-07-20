@@ -48,69 +48,70 @@ function Home() {
             icon: <ListIcon sx={{ fontSize: 60, color: 'primary.main' }} />,
             title: 'Todo',
             description: 'Gestiona tus tareas',
-            path: '/todos'
+            path: '/userTodos'
         }
     ];
 
-  return (
-    <Container sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom align="center">
-        Bienvenido a Posts Manager
-      </Typography>
-      <Typography variant="h6" gutterBottom align="center" color="text.secondary">
-        Administra tus publicaciones, usuarios, comentarios y más
-      </Typography>
+    return (
+        <Container sx={{ mt: 5 }}>
+            <Typography variant="h4" gutterBottom align="center">
+                Bienvenido a Posts Manager
+            </Typography>
+            <Typography variant="h6" gutterBottom align="center" color="text.secondary">
+                Administra tus publicaciones, usuarios, comentarios y más
+            </Typography>
 
-      <Box 
-        sx={{ 
-          mt: 2, 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          gap: 3,
-          justifyContent: 'center'
-        }}
-      >
-        {cards.map((card, index) => (
-          <Box 
-            key={index} 
-            sx={{ 
-              flex: { xs: '0 0 100%', sm: '0 0 calc(50% - 12px)', md: '0 0 calc(25% - 18px)' },
-              maxWidth: { xs: '100%', sm: 'calc(50% - 12px)', md: 'calc(25% - 18px)' }
-            }}
-          >
-              <Card
-                  component={Link}
-                  to={card.path}
-                  sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      p: 3,
-                      textDecoration: 'none',
-                      color: 'inherit',
-                      cursor: 'pointer',
-                      transition: '0.3s',
+            <Box
+                sx={{
+                    mt: 4,
+                    display: 'grid',
+                    gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, 1fr)',
+                        md: 'repeat(3, 1fr)',
+                        lg: 'repeat(4, 1fr)'
+                    },
+                    gap: 3
+                }}
+            >
+                {cards.map((card, index) => (
+                    <Card
+                        key={index}
+                        component={Link}
+                        to={card.path}
+                        sx={{
+                            height: 260,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: 3,
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            cursor: 'pointer',
+                            transition: '0.3s',
 
-                      '&:hover': {
-                          transform: 'scale(1.05)',
-                          boxShadow: 6
-                      }
-                  }}
-              >
-              {card.icon}
-              <Typography variant="h6" sx={{ mt: 2 }}>
-                {card.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" align="center">
-                {card.description}
-              </Typography>
-            </Card>
-          </Box>
-        ))}
-      </Box>
-    </Container>
-  );
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: 6
+                            }
+                        }}
+                    >
+                        {card.icon}
+
+                        <Typography variant="h6" sx={{ mt: 2 }}>
+                            {card.title}
+                        </Typography>
+
+                        <Typography variant="body2" color="text.secondary" align="center">
+                            {card.description}
+                        </Typography>
+                    </Card>
+                ))}
+
+            </Box>
+        </Container>
+    );
 }
 
 export default Home;

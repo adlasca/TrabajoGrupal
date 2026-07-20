@@ -90,7 +90,15 @@ function Photos() {
       <Typography variant="h4" gutterBottom sx={{ mt: 5, textAlign: "center" }}>
         Fotos del Álbum #{id}
       </Typography>
-
+      <Button
+          variant="outlined"
+          color="info"
+          component={Link}
+          to="/"
+          sx={{ mb: 2, mr: 2 }}
+      >
+        Regresar
+      </Button>
       <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
         <Button
           variant="contained"
@@ -103,14 +111,14 @@ function Photos() {
 
       <Grid container spacing={3} sx={{ maxWidth: 1200, margin: "20px auto", px: 2 }}>
         {photos.length === 0 ? (
-          <Grid item xs={12}>
+          <Grid size={{xs:12}}>
             <Typography variant="body1" align="center" color="text.secondary">
               No hay fotos en este álbum
             </Typography>
           </Grid>
         ) : (
           photos.map((photo: Photo) => (
-            <Grid item xs={12} sm={6} md={4} key={photo.id}>
+            <Grid size={{xs:12, sm:6, md:4}} key={photo.id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardMedia
                   component="img"
